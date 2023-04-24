@@ -76,7 +76,6 @@ export const useGlobalStore = defineStore("Spawn", {
     },
     updatePreferences(preferences: any) {
       const {
-        limitMoney,
         pokeball,
         greatball,
         ultraball

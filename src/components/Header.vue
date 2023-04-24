@@ -5,13 +5,13 @@
     <div class="toolbar-actions" style="display: flex; justify-content: center;">
       <div class="btn-group pull-center">
         <button class="btn btn-large btn-default" v-on:click="goto('home')">
-          <span class="icon icon-home"></span>
+          <span class="icon icon-signal"></span>
         </button>
         <button class="btn btn-large btn-default" v-on:click="goto('settings')">
-          <span class="icon icon-folder"></span>
+          <span class="icon icon-database"></span>
         </button>
         <button class="btn btn-large btn-default" v-on:click="goto('preferences')">
-          <span class="icon icon-cloud"></span>
+          <span class="icon icon-user"></span>
         </button>
       </div>
     </div>
@@ -22,7 +22,9 @@ export default {
     name: "Header",
     methods: {
       goto(page) {
-        if(this.$route.name.toLocaleLowerCase() === page) return
+        const route_name = this.$route.name;
+        console.log(this.$route)
+        if(route_name.toLowerCase() === page) return
         this.$router.push({ path: "/"+page })
       }
     }

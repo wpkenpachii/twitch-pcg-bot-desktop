@@ -16,6 +16,10 @@ const app = new Vue({
   },
   router,
   render: h => h(App),
-  pinia
+  pinia,
+  created() {
+    // Prevent blank screen in Electron builds
+    this.$router.push('/')
+  }
 })
 app.$mount('#app')

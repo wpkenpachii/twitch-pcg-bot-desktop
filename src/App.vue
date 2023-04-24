@@ -182,7 +182,7 @@ export default Vue.extend({
 
       console.log("result:", "skip" && pokeball)
 
-      return "skip" && pokeball
+      return !pokeball ? "skip" : pokeball
     },
 
     messageHandler(rawMessage) {

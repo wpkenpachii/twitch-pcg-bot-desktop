@@ -6845,6 +6845,11 @@ node-libs-browser@^2.2.1:
     util "^0.11.0"
     vm-browserify "^1.0.1"
 
+node-native-zip@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/node-native-zip/-/node-native-zip-1.1.0.tgz#5b7b32288a502a24c5d5a7a4d61e3e02a31fb95d"
+  integrity sha512-e9LlbNXB+3cg8e+bpDrkeevPJ12XVx2HqQBOYEwWn5MuobB8k4jVEY69xfkZB4nBCLumOlDngRicw0qOUeZg1g==
+
 node-releases@^2.0.8:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.10.tgz#c311ebae3b6a148c89b1813fd7c4d3c024ef537f"

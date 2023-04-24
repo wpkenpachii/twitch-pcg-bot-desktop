@@ -9,12 +9,14 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "zip": "node ./zip.js"
   },
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.8.3",
     "moment": "^2.29.4",
+    "node-native-zip": "^1.1.0",
     "pinia": "^2.0.35",
     "tmi.js": "^1.8.5",
     "ts-loader": "8.2.0",
@@ -61,11 +63,6 @@
       "no-console": "off",
       "vue/valid-v-model": "off"
     }
-  },
-  "browser": {
-    "fs": false,
-    "os": false,
-    "path": false
   },
   "browserslist": [
     "> 1%",
