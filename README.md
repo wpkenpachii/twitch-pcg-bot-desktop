@@ -25,7 +25,7 @@ e vai colar num arquivo que vc vai criar, com o nome de settings.json e colocar 
 settiings.json
 ```json
 {
-  "TWITCH_OAUTH_TOKEN": "oauth:ulmxthh96w3uu6g3h444bbpv6ap0er",
+  "TWITCH_OAUTH_TOKEN": "oauth:dkpaceh16uirjk5x6b2raf88jg83131",
   "CHANNEL_TO_LISTEN": "backupjorge",
   "PCG_USER": "PokemonCommunityGame",
   "CHANNEL_LANG": "ptbr",
