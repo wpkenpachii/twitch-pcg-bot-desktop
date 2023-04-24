@@ -25,6 +25,7 @@
     "webpack": "^5.80.0"
   },
   "devDependencies": {
+    "@electron-forge/publisher-github": "^6.1.1",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/tmi.js": "^1.8.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -62,6 +63,21 @@
       "vue/invalid-first-character-of-tag-name": "off",
       "no-console": "off",
       "vue/valid-v-model": "off"
+    }
+  },
+  "config": {
+    "forge": {
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "erikhofer",
+              "name": "electron-publish-example"
+            }
+          }
+        }
+      ]
     }
   },
   "browserslist": [
