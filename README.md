@@ -33,14 +33,14 @@ settiings.json
     {
       "name": "default",
       "active": true,
-      "ptbr": "(?<=TwitchLit\\sum|uma)\\s([a-zA-Zà-úÀ-Ú0-9]+)",
-      "eng": "(?<=TwitchLit\\sa\\swild\\s)([a-zA-Zà-úÀ-Ú0-9]+)"
+      "ptbr": "(?<=TwitchLit\\sum|uma)\\s(?=\\S*['-\\.])?([a-zA-Zà-úÀ-Ú0-9'-\\.]+)",
+      "eng": "(?<=TwitchLit\\sa\\swild\\s)(?=\\S*['-\\.])?([a-zA-Zà-úÀ-Ú0-9'-\\.]+)"
     },
     {
       "name": "fish_event",
       "active": true,
-      "ptbr": "(?<=deemon8FishRed\\sum|uma)\\s([a-zA-Zà-úÀ-Ú0-9]+)",
-      "eng": "(?<=deemon8FishRed\\sa\\swild\\s)([a-zA-Zà-úÀ-Ú0-9]+)"
+      "ptbr": "(?<=deemon8FishRed\\sum|uma)\\s(?=\\S*['-\\.])?([a-zA-Zà-úÀ-Ú0-9'-\\.]+)",
+      "eng": "(?<=deemon8FishRed\\sa\\swild\\s)(?=\\S*['-\\.])?([a-zA-Zà-úÀ-Ú0-9'-\\.]+)"
     }
   ]
 }
