@@ -3,6 +3,7 @@ node_modules
 /dist
 *settings.json
 *.zip
+*.exe
 
 # local env files
 .env.local
