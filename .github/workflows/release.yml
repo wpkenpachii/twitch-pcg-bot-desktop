@@ -1,6 +1,8 @@
 name: Build bot release
 on: [push]
 
+env:
+  GH_TOKEN: $ELECTRON_BUILD_WORKFLOW_2
     
 jobs:
     build-bot:
