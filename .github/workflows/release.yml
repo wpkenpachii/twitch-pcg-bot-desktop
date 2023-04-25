@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: new-bot-release
-          path: ./bot.exe
+          path: ./bot.zip
 
     # Create release job
     release-project:
