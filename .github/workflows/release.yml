@@ -27,7 +27,7 @@ jobs:
         run: yarn
       - name: Build Bot Exe
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn electron:build
       - name: Zip build exe
         run: yarn zip
