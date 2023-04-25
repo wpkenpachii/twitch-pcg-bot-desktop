@@ -10,7 +10,7 @@ jobs:
       steps:
       - uses: actions/setup-node@v3
         with:  
-          node-version: 'l6.20.0'
+          node-version: 16
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install NPM dependencies
