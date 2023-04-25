@@ -57,12 +57,6 @@ jobs:
         with:
           tag_name: ${{ github.run_number }}
           release_name: Release ${{ github.run_number }}
-      
-      # Upload asset to release
-      - name: Archive bot release content
-        uses: thedoctor0/zip-release@master
-        with:
-          filename: bot.zip
 
       # Upload asset to release
       - name: Upload release asset
