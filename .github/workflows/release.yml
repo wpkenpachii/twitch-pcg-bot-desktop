@@ -15,10 +15,20 @@ jobs:
           node-version: 16
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # - name: Build/release Electron app
+      #   uses: samuelmeuli/action-electron-builder@v1
+      #   with:
+      #     # GitHub token, automatically provided to the action
+      #     # (No need to define this secret in the repo settings)
+      #     github_token: ${{ secrets.github_token }}
+
       - name: Install NPM dependencies
         run: yarn
       - name: Build Bot Exe
-        run: npm run electron:build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn electron:build
       - name: Zip build exe
         run: yarn zip
 
