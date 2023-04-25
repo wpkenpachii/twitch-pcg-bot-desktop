@@ -33,7 +33,8 @@ jobs:
     release-project:
       permissions: write-all
       name: Release Project
-      runs-on: wnidows-latest
+      runs-on: ubuntu-latest
+      container: node:16
       needs: build-bot
       steps:
 
