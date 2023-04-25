@@ -37,6 +37,7 @@
 
 <script>
 import FileReader from "@/components/FileReader.vue"
+import { useGlobalStore } from "@/database/globalStore"
 export default {
   name: "Settings",
   components: {
@@ -44,6 +45,7 @@ export default {
   },
   data() {
     return {
+      store: null,
       rawData: "",
       editable: false,
       oauthToken: "oauth:dkpaceh16uirjk5x6b2raf88jg83131",
@@ -55,7 +57,6 @@ export default {
   watch: {
     rawData: {
       deep: true,
-
       handler(newValue, oldValue) {
         console.log('watch:', newValue, oldValue);
         const {
@@ -72,12 +73,13 @@ export default {
     }
   },
   mounted() {
+    this.store = useGlobalStore();
     const {
       TWITCH_OAUTH_TOKEN,
       CHANNEL_TO_LISTEN,
       PCG_USER,
       CHANNEL_LANG
-    } = this.$root.$data.globalStore.settings;
+    } = this.store.settings;
     this.oauthToken   = TWITCH_OAUTH_TOKEN;
     this.channel      = CHANNEL_TO_LISTEN;
     this.pcgUsername  = PCG_USER;
@@ -89,7 +91,7 @@ export default {
     },
     save() {
       this.editable = false;
-      this.$root.$data.globalStore.updateSettings(this.rawData)
+      this.store.updateSettings(this.rawData)
       this.$emit("setupTmi", {
         oauthToken: this.oauthToken,
         channel: this.channel,

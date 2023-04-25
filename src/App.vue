@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <Header ref="header" />
     <keep-alive>
       <router-view @setupTmi="setupTmi" :spawns="spawns" />
     </keep-alive>
@@ -15,26 +15,6 @@ import moment from "moment"
 
 import { removeWordsAccents } from "@/utils.ts"
 
-// enum Tiers {
-//   STARTER = "Starter",
-//   S       = "S",
-//   A       = "A",
-//   B       = "B",
-//   C       = "C",
-// }
-
-// type Spawn = {
-//   "#ID": string,
-//   Name: string,
-//   "Pokedex ID": number,
-//   "Pokemon Order": number,
-//   Tier: Tiers,
-//   "Base Stats Total": number,
-//   Generation: number,
-//   pokeball: string,
-//   Time: string
-// }
-
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 export default Vue.extend({
   name: 'App',
@@ -43,6 +23,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      connected: false,
       globalStore: null,
       ws: null,
       token: "",
@@ -91,6 +72,7 @@ export default Vue.extend({
 
       if (this.ws) {
         try {
+          await this.ws.removeAllListeners()
           this.ws = null;
         } catch (error) {
           console.log(error)
@@ -105,7 +87,13 @@ export default Vue.extend({
         },
         channels: [channel],
       });
+
+      this.globalStore.setConnection("connecting");
+      this.$refs.header.updateConnectionStatus();
+
       this.ws.connect().then(() => {
+        this.globalStore.setConnection("connected");
+        this.$refs.header.updateConnectionStatus();
         console.log('Bot connected in following chats', [channel]);
         console.log('To stop the bot, close the terminal or use ctrl + c');
         console.log('Settings', {
@@ -113,6 +101,8 @@ export default Vue.extend({
           "PcgUser": this.pcg_user
         })
       }).catch((err) => {
+        this.globalStore.setConnection("disconnected");
+        this.$refs.header.updateConnectionStatus();
         if (err.message.match('No response from Twitch')) {
           console.log('Missing or Invalid Token')
         }

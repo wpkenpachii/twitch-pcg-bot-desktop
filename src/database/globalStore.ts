@@ -4,6 +4,7 @@ import moment from "moment"
 export const useGlobalStore = defineStore("Spawn", {
   state: () => {
     return {
+      connected: "disconnected",
       settings: {
         "TWITCH_OAUTH_TOKEN": "dkpaceh16uirjk5x6b2raf88jg83131",
         "CHANNEL_TO_LISTEN": "wpkenpachi",
@@ -54,10 +55,15 @@ export const useGlobalStore = defineStore("Spawn", {
     }
   },
   getters: {
+    connectionStatus: () => window.localStorage.getItem("connection"),
     getSpawns: (state: any) => state.spawns,
     getSpawnMessages: (state: any) => state.spwan_messages
   },
   actions: {
+    setConnection(status: "connected" | "connecting" | "disconnected") {
+      window.localStorage.setItem("connection", status);
+      this.connected = window.localStorage.setItem("connection", status) as unknown as string;
+    },
     updateSettings(settings: any) {
       this.settings = settings;
     },
