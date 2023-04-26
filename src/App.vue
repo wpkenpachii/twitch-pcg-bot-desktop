@@ -14,6 +14,9 @@ import tmi from "tmi.js"
 import moment from "moment"
 
 import { removeWordsAccents } from "@/utils.ts"
+import { useGlobalStore } from "@/database/globalStore"
+
+const emotes = ["jorg1t3Wiggle", "jorg1t3Dance", "jorg1t3Pipoca", "jorg1t3Hey", "jorg1t3Love", "jorg1t3Anota", "jorg1t3F", "Shush" ];
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 export default Vue.extend({
@@ -23,6 +26,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      activityMessageListener: null,
       connected: false,
       globalStore: null,
       ws: null,
@@ -35,7 +39,7 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    this.globalStore = this.$root.$data.globalStore;
+    this.globalStore = useGlobalStore();
     this.globalStore.setSpawnMessages();
 
     // Set settings from the settings file
@@ -44,7 +48,7 @@ export default Vue.extend({
       CHANNEL_TO_LISTEN,
       PCG_USER,
       CHANNEL_LANG
-    } = this.$root.$data.globalStore.settings;
+    } = this.globalStore.settings;
 
     this.oauthToken   = TWITCH_OAUTH_TOKEN;
     this.channel      = CHANNEL_TO_LISTEN;
@@ -94,6 +98,18 @@ export default Vue.extend({
       this.ws.connect().then(() => {
         this.globalStore.setConnection("connected");
         this.$refs.header.updateConnectionStatus();
+
+        // mensagens
+        // if (!this.globalStore.shadowbanSecurity) {
+        //   const emotes = ["jorg1t3Panic2", "jorg1t3Wiggle", "jorg1t3Dance", "jorg1t3Hey", "jorg1t3Pipoca", "jorg1t3Shine", "jorg1t3D", "jorg1t3Love" ];
+        //   const index = (Math.floor(Math.random() * 6))
+        //   this.ws.say(channel, emotes[index]);
+        //   this.activityMessageListener= setInterval(() => {
+        //     this.ws.say(channel, emotes[index]);
+        //   }, this.globalStore.activityTime * 1000 * 60)
+        // }
+
+        
         console.log('Bot connected in following chats', [channel]);
         console.log('To stop the bot, close the terminal or use ctrl + c');
         console.log('Settings', {
@@ -109,8 +125,11 @@ export default Vue.extend({
       });
       this.ws.on("message", this.onMessage);
     },
+
+
     async onMessage(channel, tags, message, self) {
       if (self) return;
+      if (this.globalStore.getBotStatus) return
       if (tags.username.toLocaleLowerCase() === this.pcg_user.toLocaleLowerCase()) {
         const _msg = this.lang === 'ptbr' ? 'Tente capturar usando !pokecatch' : 'Catch it using !pokecatch'
         if (message.match(_msg)) {
@@ -129,16 +148,24 @@ export default Vue.extend({
                 await sleep(1200);
                 this.ws.say(channel, '!pokecheck')
 
-                setTimeout(() => {
-                  const emotes = ["jorg1t3Tuc", "jorg1t3Wiggle", "jorg1t3Dance", "jorg1t3Hey", "jorg1t3Pipoca", "jorg1t3Shine", "jorg1t3D", "jorg1t3Love" ];
-                  const index = (Math.floor(Math.random() * 6))
-                  this.ws.say(channel, emotes[index]);
-                }, Math.trunc( (Math.floor(Math.random() * 3) + 5) * 60000 ))
+                if (this.globalStore.activityTime > 0) {
+                  this.activityMessage(channel)
+                }
+                
               })
             })
           }
         }
       }
+    },
+
+    activityMessage(channel) {
+      const emotes = ["jorg1t3Wiggle", "jorg1t3Dance", "jorg1t3Pipoca", "jorg1t3Hey", "jorg1t3Love", "jorg1t3Anota", "jorg1t3F", "Shush" ];
+      const index = (Math.floor(Math.random() * 6));
+      this.ws.say(channel, emotes[index]);
+      setTimeout(() => {
+        this.ws.say(channel, emotes[index]);
+      }, this.globalStore.activityTime * 1000 * 60)
     },
 
     feedSpawns(pokemon, pokeball) {

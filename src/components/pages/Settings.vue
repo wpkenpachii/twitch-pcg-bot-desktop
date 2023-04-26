@@ -63,12 +63,15 @@ export default {
           TWITCH_OAUTH_TOKEN,
           CHANNEL_TO_LISTEN,
           PCG_USER,
-          CHANNEL_LANG
+          CHANNEL_LANG,
+          SETTINGS
         } = newValue;
         this.oauthToken   = TWITCH_OAUTH_TOKEN;
         this.channel      = CHANNEL_TO_LISTEN;
         this.pcgUsername  = PCG_USER;
         this.lang         = CHANNEL_LANG;
+        // const { pokeball, greatball, ultraball } = SETTINGS;
+        // this.store.setPokeballSettings(pokeball, greatball, ultraball);
       }
     }
   },

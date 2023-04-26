@@ -5,6 +5,8 @@ export const useGlobalStore = defineStore("Spawn", {
   state: () => {
     return {
       connected: "disconnected",
+      botStatus: false,
+      activityTime: 5,
       settings: {
         "TWITCH_OAUTH_TOKEN": "dkpaceh16uirjk5x6b2raf88jg83131",
         "CHANNEL_TO_LISTEN": "wpkenpachi",
@@ -55,11 +57,28 @@ export const useGlobalStore = defineStore("Spawn", {
     }
   },
   getters: {
+    // getPokeballSettings: (state: any) => ({ pokeball: state.pokeball, greatball: state.greatball, ultraball: state.ultraball}),
+    getBotStatus: (state: any) => state.botStatus,
     connectionStatus: () => window.localStorage.getItem("connection"),
     getSpawns: (state: any) => state.spawns,
-    getSpawnMessages: (state: any) => state.spwan_messages
+    getSpawnMessages: (state: any) => state.spwan_messages,
+    getShadowbanSecurity: (state: any) => state.shadowbanSecurity,
+    getActivityTime: (state: any) => state.activityTime,
   },
   actions: {
+    // setPokeballSettings(pokeball: any, greatball: any, ultraball: any) {
+    //   this.pokeball = pokeball;
+    //   this.greatball = greatball;
+    //   this.ultraball = ultraball;
+    // },
+    setBotStatus(botStatus: boolean) {
+      this.botStatus = botStatus;
+      console.log('BotStatus', botStatus)
+    },
+    setActivityTime(value: number){
+      this.activityTime = value;
+      console.log('ActivityTime', this.activityTime);
+    },
     setConnection(status: "connected" | "connecting" | "disconnected") {
       window.localStorage.setItem("connection", status);
       this.connected = window.localStorage.setItem("connection", status) as unknown as string;

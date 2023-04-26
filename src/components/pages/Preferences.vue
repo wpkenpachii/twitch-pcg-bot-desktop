@@ -2,9 +2,14 @@
     <section id="section" style="display: flex">
         <form>
           <div class="form-group">
-            <!-- eslint-disable-next-line -->
-            <span> <i>(Not working yet)</i> Stop Trying to Catch when money is lower then (<=) </span>
-            <input type="number" v-model="limitMoney" placeholder="1000">
+            <span> <b>Desativar</b>&nbsp;<b style="color: red">Bot</b>&nbsp;&nbsp;</span>
+            <input type="checkbox" v-model="botStatus"> <br>
+            <span>(Pausar a tentativa de captura)</span>
+          </div>
+          <div class="form-group">
+            <span> <b> Quanto tempo depois da tentativa de captura, enviar prova de atividade (mensagem)?</b> </span> &nbsp;&nbsp;
+            <input type="number" :disabled="editable === false" v-model="activityTime" min="5" max="15" placeholder="1000" step="2"> minutos <br>
+            <span>(Caso numero negativo, apenas mensagens de tentativa de captura serao enviadas)</span>
           </div>
 
           <div class="form-group">
@@ -79,6 +84,8 @@ export default {
   name: "preferences",
   data() {
     return {
+      botStatus: false,
+      activityTime: 5,
       spawnStore: null,
       editable: true,
       limitMoney: 1000,
@@ -109,9 +116,25 @@ export default {
     }
   },
   mounted() {
-    this.globalStore = this.$root.$data.globalStore;
+    this.globalStore        = this.$root.$data.globalStore;
+    this.activityTime       = this.globalStore.activityTime;
+    this.shadowbanSecurity  = this.globalStore.shadowbanSecurity;
+  },
+  watch: {
+    activityTime(new_value) {
+      this.globalStore.setActivityTime(new_value);
+    },
+    botStatus(new_value) {
+      this.globalStore.setBotStatus(new_value);
+    }
   },
   methods: {
+    updatePreferences() {
+      const { pokeball, greatball, ultraball } = this.globalStore.getPokeballSettings
+      this.pokeball           = pokeball;
+      this.greatball          = greatball;
+      this.ultraball          = ultraball;
+    },
     save() {
       this.editable = false;
       this.globalStore.updatePreferences({
