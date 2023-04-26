@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header ref="header" />
-    <keep-alive>
+    <keep-alive class="container">
       <router-view @setupTmi="setupTmi" :spawns="spawns" />
     </keep-alive>
   </div>
@@ -9111,4 +9111,9 @@ function getPokemons() {
 }
 </script>
 
-<style></style>
+<style lang="css">
+.container {
+  display: flex;
+  justify-content: center;
+}
+</style>
