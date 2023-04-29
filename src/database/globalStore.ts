@@ -5,8 +5,8 @@ export const useGlobalStore = defineStore("Spawn", {
   state: () => {
     return {
       connected: "disconnected",
-      botStatus: false,
-      activityTime: 5,
+      keepActivity: false,
+      disableBot: false,
       settings: {
         "TWITCH_OAUTH_TOKEN": "dkpaceh16uirjk5x6b2raf88jg83131",
         "CHANNEL_TO_LISTEN": "wpkenpachi",
@@ -29,6 +29,14 @@ export const useGlobalStore = defineStore("Spawn", {
       },
       spawns: [],
       limitMoney: 1000,
+      onlyMessagesPreferences: {
+        statsGt: 380,
+        tiers: {
+          A: true,
+          B: true,
+          C: true
+        }
+      },
       pokeball: {
         statsGt: 380,
         tiers: {
@@ -58,7 +66,7 @@ export const useGlobalStore = defineStore("Spawn", {
   },
   getters: {
     // getPokeballSettings: (state: any) => ({ pokeball: state.pokeball, greatball: state.greatball, ultraball: state.ultraball}),
-    getBotStatus: (state: any) => state.botStatus,
+    isBotDisabled: (state: any) => state.disableBot,
     connectionStatus: () => window.localStorage.getItem("connection"),
     getSpawns: (state: any) => state.spawns,
     getSpawnMessages: (state: any) => state.spwan_messages,
@@ -71,13 +79,17 @@ export const useGlobalStore = defineStore("Spawn", {
     //   this.greatball = greatball;
     //   this.ultraball = ultraball;
     // },
-    setBotStatus(botStatus: boolean) {
-      this.botStatus = botStatus;
-      console.log('BotStatus', botStatus)
+    setDisableBot(disable: boolean) {
+      this.disableBot = disable;
+      console.log('BotStatus', disable)
     },
-    setActivityTime(value: number){
-      this.activityTime = value;
-      console.log('ActivityTime', this.activityTime);
+    setKeepActivity(value: boolean){
+      this.keepActivity = value;
+      console.log('ActivityTime', this.keepActivity);
+    },
+    setOnlyMessagesPreferences(preferences: any) {
+      this.onlyMessagesPreferences = preferences;
+      console.log('OnlyMessagesPreferences', this.onlyMessagesPreferences)
     },
     setConnection(status: "connected" | "connecting" | "disconnected") {
       window.localStorage.setItem("connection", status);
@@ -103,7 +115,7 @@ export const useGlobalStore = defineStore("Spawn", {
       const {
         pokeball,
         greatball,
-        ultraball
+        ultraball,
       } = preferences;
       this.pokeball = pokeball
       this.greatball = greatball
@@ -111,7 +123,7 @@ export const useGlobalStore = defineStore("Spawn", {
       console.table([
         this.pokeball,
         this.greatball,
-        this.ultraball,
+        this.ultraball
       ])
     },
     storeSpawn(pokemon: any) {
