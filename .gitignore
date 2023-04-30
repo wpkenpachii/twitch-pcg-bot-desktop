@@ -2,6 +2,7 @@
 node_modules
 /dist
 *settings.json
+*wpkenpachi.json
 *.zip
 *.exe
 

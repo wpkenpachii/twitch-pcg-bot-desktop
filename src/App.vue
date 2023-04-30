@@ -104,6 +104,8 @@ export default Vue.extend({
         this.globalStore.setConnection("connected");
         this.$refs.header.updateConnectionStatus();
 
+        this.ws.say(channel, "!pokepass")
+
         console.log('Bot connected in following chats', [channel]);
         console.log('To stop the bot, close the terminal or use ctrl + c');
         console.log('Settings', {
@@ -122,39 +124,57 @@ export default Vue.extend({
 
 
     async onMessage(channel, tags, message, self) {
-      if (self) return;
+      //if (self) return;
 
-      // VERIFY KEEP ACTIVITY
+      if (["streamelements", this.pcg_user.toLocaleLowerCase()].includes(tags.username.toLocaleLowerCase())) {
+        const regex = new RegExp(`^Saldo de @${this.ws.username}:\\s\\$([0-9]+)`, 'gmi')
+        const match = regex.exec(message)
+        if (match && parseInt(match[1])) {
+          console.log('SALDO', parseInt(match[1]))
+          this.globalStore.setBalance(parseInt(match[1]));
+          console.log(this.globalStore.balance)
+        }
+      }
+
       
       if (tags.username.toLocaleLowerCase() === this.pcg_user.toLocaleLowerCase()) {
         const _msg = this.lang === 'ptbr' ? 'Tente capturar usando !pokecatch' : 'Catch it using !pokecatch'
         if (message.match(_msg)) {
           const pokemonName = this.messageHandler(message);
           console.log(pokemonName)
-          if (!pokemonName) return
+          if (!pokemonName) return console.log('Nome do Pokemon Nao resolvido')
           const pokemon = this.getPokemonFromName(pokemonName);
-          if (!pokemon) return
+          if (!pokemon) return console.log('Pokemon Nao encontrado')
           console.log(pokemon)
           
           if (this.globalStore.keepActivity) this.verifyKeepActivityMessagesPreferences(pokemon, channel);
-          if (this.globalStore.isBotDisabled) return
+          if (this.globalStore.isBotDisabled) return console.log('O Bot esta inativo.')
 
           const result = this.verifyCatchPreferences(pokemon)
+          console.log('Verifying Catch Preferences', result)
 
           // TRY CAUGHT POKEMON
           if (result !== 'skip') {
-            this.feedSpawns(pokemon, result)
-            this.ws.say(channel, `!pokeshop ${result}`).then(async () => {
-              await sleep(1200);
-              this.ws.say(channel, `!pokecatch ${result}`).then(async () => {
-                await sleep(1200);
-                this.ws.say(channel, '!pokecheck')
-                
-              })
+            this.ws.say(channel, "!pokepass").then(async () => {
+              await sleep(1350)
+              if (this.globalStore.balance < this.globalStore.limitMoney) {
+                console.log('Balance', this.globalStore.balance, 'LimitMoney', this.globalStore.limitMoney)
+                const index = (Math.floor(Math.random() * (emotes.length-1)));
+                this.ws.say(channel, `FeelsBadMan ❌ 💸`);
+              } else {
+                this.ws.say(channel, `!pokeshop ${result}`).then(async () => {
+                  await sleep(1200);
+                  this.ws.say(channel, `!pokecatch ${result}`).then(async () => {
+                    this.feedSpawns(pokemon, result)
+                  })
+                })
+              }
             })
+          } else {
+            console.log('Skipped Pokemon')
           }
 
-          
+
         }
       }
     },
@@ -164,8 +184,9 @@ export default Vue.extend({
       const { statsGt, tiers } = this.globalStore.onlyMessagesPreferences;
       console.log('VerifyOnlyMessage->', tiers[Tier], BaseStatsTotal, statsGt)
       if (tiers[Tier] && BaseStatsTotal >= statsGt) {
-        const index = (Math.floor(Math.random() * (emotes.length-1)));
-        this.ws.say(channel, emotes[index]);
+        this.activityMessage(channel)
+      } else {
+        console.log('Tier ou Base Status nao se enquadram.')
       }
     },
 
@@ -245,5 +266,12 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0px !important;
+  padding: 0px !important;
 }
 </style>

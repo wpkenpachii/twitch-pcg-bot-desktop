@@ -1,5 +1,5 @@
 <template lang="">
-    <section id="section" style="display: flex">
+    <section id="section">
         <form>
           <div class="form-group">
             <span> <b>Desativar</b>&nbsp;<b style="color: red">Bot</b>&nbsp;&nbsp;</span>
@@ -10,6 +10,10 @@
           <div class="form-group">
             <span> <b> Habilitar manter atividade no chat </b> </span> &nbsp;&nbsp;
             <input :disabled="!this.disableBot || !this.editable" type="checkbox" v-model="keepActivity"> <br>
+          </div>
+
+          <div class="form-group" style="flex-direction: row;display: flex;">
+            <span style="display: flex;align-items: center;"> <b> Minimo de Pokemoney para tentativa de captura: </b> $</span> &nbsp;&nbsp;<input :disabled="this.disableBot || !this.editable" type="input" v-model="limitMoney" size="5">
           </div>
 
           <div class=form-group v-if="isOnlyMessage">
@@ -189,6 +193,7 @@ export default {
     this.disableBot         = this.globalStore.disableBot;
     this.setKeepActivity    = this.globalStore.setKeepActivity;
     this.onlyMessage        = this.globalStore.onlyMessagesPreferences;
+    this.limitMoney         = this.globalStore.limitMoney;
   },
   watch: {
     keepActivity(new_value) {
@@ -205,6 +210,7 @@ export default {
       setTimeout(() => {
         this.editable = true
       }, 1000)
+      this.globalStore.setLimitMoney(this.limitMoney)
       this.globalStore.setOnlyMessagesPreferences(this.onlyMessage)
       this.globalStore.updatePreferences({
         pokeball: this.pokeball,
