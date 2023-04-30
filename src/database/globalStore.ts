@@ -7,6 +7,10 @@ export const useGlobalStore = defineStore("Spawn", {
       connected: "disconnected",
       keepActivity: false,
       disableBot: false,
+      balance: 0,
+      hasPokeball: 0,
+      hasGreatball: 0,
+      hasUltraball: 0,
       settings: {
         "TWITCH_OAUTH_TOKEN": "dkpaceh16uirjk5x6b2raf88jg83131",
         "CHANNEL_TO_LISTEN": "wpkenpachi",
@@ -28,7 +32,7 @@ export const useGlobalStore = defineStore("Spawn", {
         ]
       },
       spawns: [],
-      limitMoney: 1000,
+      limitMoney: 10000,
       onlyMessagesPreferences: {
         statsGt: 380,
         tiers: {
@@ -79,6 +83,21 @@ export const useGlobalStore = defineStore("Spawn", {
     //   this.greatball = greatball;
     //   this.ultraball = ultraball;
     // },
+    setBalance(amount: number) {
+      this.balance = amount;
+    },
+    setPokeballs(amount: number) {
+      this.hasPokeball = amount;
+    },
+    setGreatballs(amount: number) {
+      this.hasGreatball = amount;
+    },
+    setUltraballs(amount: number) {
+      this.hasUltraball = amount;
+    },
+    setLimitMoney(amount: number) {
+      this.limitMoney = amount;
+    },
     setDisableBot(disable: boolean) {
       this.disableBot = disable;
       console.log('BotStatus', disable)
