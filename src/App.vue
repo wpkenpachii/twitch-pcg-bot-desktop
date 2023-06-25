@@ -12,12 +12,14 @@ import Vue from 'vue';
 import Header from './components/Header.vue'
 import tmi from "tmi.js"
 import moment from "moment"
-import getPokemons from "@/database/pokemons.ts"
+import getPokemons from "@/database/pokemon"
 
 import { removeWordsAccents } from "@/utils.ts"
 import { useGlobalStore } from "@/database/globalStore"
+import { storeAllRules, getAllRules } from "@/database/models/catching-rules.model"
+import { FIFTH_MINUTES_MS } from "@/utils/constants" 
 
-const FIFTH_MINUTES_MS = 15 * 1000 * 60;
+import "@/services/pokemon-api"
 
 const emotes = [
   'jorg1t3Anota', 'jorg1t3Dance', 'jorg1t3Hey', 'jorg1t3Panic2', 'jorg1t3Wiggle', 'jorg1t3F', 'jorg1t3Flor', 'jorg1t3Love', 'jorg1t3Lurk', 'jorg1t3Pipoca', 'jorg1t3Pray', 'jorg1t3Shrug', 'jorg1t3Triste', 'jorg1t3Uhh'
@@ -44,6 +46,21 @@ export default Vue.extend({
     }
   },
   async mounted() {
+
+    await storeAllRules([
+      {
+        rule_name: "weekly_missions",
+        rules: [
+            {
+                "type": "BY_POKEMON_TYPE",
+                "pokemon_types": ["DRAGON"],
+                "pokeball": "cipherball"
+            }
+        ]
+      }
+    ])
+
+
     this.globalStore = useGlobalStore();
     this.globalStore.setSpawnMessages();
 
@@ -230,6 +247,10 @@ export default Vue.extend({
       console.log("result:", "skip" && pokeball)
 
       return !pokeball ? "skip" : pokeball
+    },
+
+    checkPreferencesPipeline() {
+      
     },
 
     messageHandler(rawMessage) {

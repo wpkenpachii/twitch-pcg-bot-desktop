@@ -70,8 +70,6 @@ export default {
         this.channel      = CHANNEL_TO_LISTEN;
         this.pcgUsername  = PCG_USER;
         this.lang         = CHANNEL_LANG;
-        // const { pokeball, greatball, ultraball } = SETTINGS;
-        // this.store.setPokeballSettings(pokeball, greatball, ultraball);
       }
     }
   },

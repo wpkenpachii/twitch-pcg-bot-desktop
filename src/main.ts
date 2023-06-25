@@ -7,7 +7,7 @@ Vue.config.productionTip = false
 
 Vue.use(PiniaVuePlugin)
 const pinia = createPinia();
-import { useGlobalStore } from "@/database/globalStore"
+import { useGlobalStore } from "@/pinia/globalStore"
 const app = new Vue({
   data() {
     return {

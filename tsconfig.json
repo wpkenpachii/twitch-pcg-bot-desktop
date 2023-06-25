@@ -28,13 +28,18 @@
       "scripthost"
     ]
   },
+  "vueCompilerOptions": {
+    "extensions": [
+      ".vue"
+    ]
+  },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/utils/constants.ts", "src/utils/constants.ts", "src/database/db.js", "src/database/db.js", "src/database/models/catching-rules.model.ts", "src/database/models/catching-rules.model.ts"  ],
   "exclude": [
     "node_modules"
   ]
